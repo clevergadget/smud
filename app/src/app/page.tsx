@@ -62,6 +62,7 @@ export default function Home() {
 
       {reply && (
         <div style={{ marginTop: '1rem', padding: '1rem', background: '#111', color: '#eee' }}>
+          {/* eslint-disable-next-line react/no-unescaped-entities */}
           <h2>AI's Reply:</h2>
           <p>{reply}</p>
         </div>

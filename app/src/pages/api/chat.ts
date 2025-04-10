@@ -32,11 +32,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const assistantMessage = response.choices[0]?.message?.content;
     return res.status(200).json({ reply: assistantMessage });
-  } catch (error: any) {
-    console.error('OpenAI error:', error);
-    return res.status(500).json({
-      message: 'Failed to get response from OpenAI',
-      error: error.message || 'Unknown error',
-    });
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error('OpenAI error:', error);
+      return res.status(500).json({
+        message: 'Failed to get response from OpenAI',
+        error: error.message,
+      });
+    } else {
+      console.error('OpenAI error (non-Error):', error);
+      return res.status(500).json({
+        message: 'Failed to get response from OpenAI',
+        error: 'Unknown error',
+      });
+    }
   }
 }
