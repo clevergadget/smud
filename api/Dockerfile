@@ -10,8 +10,6 @@ RUN npm install
 # Copy everything else
 COPY . .
 
-# Build the app
-RUN npm run build
 
 # Tell Docker we want to expose port 3000
 EXPOSE 3000
