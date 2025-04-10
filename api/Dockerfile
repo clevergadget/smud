@@ -17,4 +17,4 @@ RUN npm run build
 EXPOSE 3000
 
 # Run the app (Next.js production mode)
-CMD ["npm", "start"]
+CMD ["node", "index.mjs"]
