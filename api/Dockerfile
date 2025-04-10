@@ -1,9 +1,6 @@
 # Use Node.js slim image as the base image
 FROM node:slim
 
-# Create a working directory
-WORKDIR /app
-
 # Copy dependency files first (better for caching)
 COPY package*.json ./
 

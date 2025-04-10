@@ -1,0 +1,12 @@
+{
+    "name": "smud-api",
+    "type": "module",
+    "scripts": {
+      "start": "node index.mjs"
+    },
+    "dependencies": {
+      "express": "^4.18.2",
+      "dotenv": "^16.0.3",
+      "openai": "^4.0.0"
+    }
+  }
