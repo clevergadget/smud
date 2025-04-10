@@ -1,5 +1,5 @@
 # Use Node.js v20 on Alpine Linux (small & fast)
-FROM node:20-alpine
+FROM node:slim
 
 # Create a working directory
 WORKDIR /app
