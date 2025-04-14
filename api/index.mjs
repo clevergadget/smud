@@ -20,7 +20,7 @@ const openai = new OpenAI({
 
 
 app.use(cors({
-  origin: 'http://smud-frontend-bucket.s3-website-us-east-2.amazonaws.com',
+  origin: 'http://smud-frontend-bucket.s3-website.us-east-2.amazonaws.com',
   methods: ['GET', 'POST'],
 }));
 
