@@ -136,3 +136,5 @@ dist
 .pnp.*
 smud-key.pem
 api/.local.env
+smud-deploy-key
+smud-deploy-key.pub
