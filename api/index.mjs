@@ -18,6 +18,10 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
+app.use((req, res, next) => {
+  console.log('Incoming origin:', req.headers.origin);
+  next();
+});
 
 app.use(cors({
   origin: 'http://smud-frontend-bucket.s3-website.us-east-2.amazonaws.com',
