@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import OpenAI from 'openai';
+import cors from 'cors';
 
 dotenv.config();
 
@@ -10,6 +11,13 @@ app.use(express.json());
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
+
+
+app.use(cors({
+  origin: 'http://smud-frontend-bucket.s3-website-us-east-2.amazonaws.com',
+  methods: ['GET', 'POST'],
+}));
+
 
 app.post('/api/chat', async (req, res) => {
   const { userMessage } = req.body;
