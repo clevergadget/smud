@@ -5,12 +5,12 @@ import cors from 'cors';
 
 dotenv.config();
 
+const app = express();
+
 app.use(cors({
   origin: 'http://smud-frontend-bucket.s3-website-us-east-2.amazonaws.com',
   methods: ['GET', 'POST'],
 }));
-
-const app = express();
 
 app.use(express.json());
 
