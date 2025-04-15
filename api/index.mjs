@@ -36,9 +36,9 @@ app.post('/api/chat', async (req, res) => {
 
   try {
     const response = await openai.chat.completions.create({
-      model: 'gpt-3.5-turbo',
+      model: 'gpt-4.1-nano',
       messages: [
-        { role: 'system', content: 'You are a MUD narrator.' },
+        { role: 'system', content: 'You are a MUD narrator. Especially as a MUD is distinct from a MUCK or MUSH' },
         { role: 'user', content: userMessage },
       ],
     });
