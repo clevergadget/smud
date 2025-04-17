@@ -5,15 +5,20 @@ import { useEffect, useState } from 'react';
 export default function Home() {
   const [intro, setIntro] = useState('');
   const [userMessage, setUserMessage] = useState('');
-  const [reply, setReply] = useState('');
+  const [log, setLog] = useState<{ role: 'user' | 'ai'; message: string }[]>([]);
+
 
   useEffect(() => {
     const fetchIntro = async () => {
-      const res = await fetch('/mudData/darkswamp/intro.md');
-      const text = await res.text();
-      setIntro(text);
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/intro?mud=darkswamp`);
+        const text = await res.text();
+        setIntro(text);
+      } catch (err) {
+        console.error('Failed to fetch intro:', err);
+      }
     };
-
+  
     fetchIntro();
   }, []);
 
@@ -21,6 +26,10 @@ export default function Home() {
     e.preventDefault();
 
     if (!userMessage.trim()) return;
+
+    setLog((prev) => [...prev, { role: 'user', message: userMessage }]);
+    setUserMessage('');
+
     const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/chat`;
 
     try {
@@ -31,43 +40,54 @@ export default function Home() {
       });
 
       const data = await response.json();
-      setReply(data.reply || '');
+      setLog((prev) => [...prev, { role: 'ai', message: data.reply || '' }]);
+
     } catch (error) {
       console.error('Error:', error);
     }
   };
 
   return (
-    <div style={{ margin: '2rem auto', maxWidth: '600px' }}>
-      <h1>DarkSwamp MUD</h1>
+    <main className="flex flex-col h-screen bg-black text-white p-4">
+      {/* Title and intro text */}
+      <header className="mb-4">
+        <h1 className="text-2xl font-bold">DarkSwamp MUD</h1>
+        {intro && (
+          <p className="text-sm text-gray-400 mt-1 whitespace-pre-wrap">{intro}</p>
+        )}
+      </header>
 
-      {intro && (
-        <div style={{ background: '#222', color: '#eee', padding: '1rem', borderRadius: '0.5rem', marginBottom: '1rem' }}>
-          <h2>Intro</h2>
-          <p>{intro}</p>
+      {/* Message log that grows upward */}
+      <div className="flex-1 overflow-y-auto flex flex-col-reverse bg-gray-950 p-4 rounded shadow text-sm font-mono whitespace-pre-wrap">
+        <div>
+          {log.map((entry, idx) => (
+            <div key={idx} className="mb-2">
+              <span className="text-gray-400">
+                {entry.role === 'user' ? '> ' : '💬 '}
+              </span>
+              <span>{entry.message}</span>
+            </div>
+          ))}
         </div>
-      )}
+      </div>
 
-      <form onSubmit={handleSubmit}>
+      {/* Input form pinned to the bottom */}
+      <form onSubmit={handleSubmit} className="mt-4 flex flex-col space-y-2">
         <textarea
-          rows={5}
-          cols={50}
+          rows={3}
           value={userMessage}
           onChange={(e) => setUserMessage(e.target.value)}
           placeholder="What do you do?"
+          className="w-full bg-gray-800 p-3 rounded text-white border border-gray-700 focus:outline-none focus:ring focus:border-blue-500"
         />
-        <div>
-          <button type="submit">Send</button>
-        </div>
+        <button
+          type="submit"
+          className="bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2 px-4 rounded w-full transition-colors"
+        >
+          Send
+        </button>
       </form>
+    </main>
 
-      {reply && (
-        <div style={{ marginTop: '1rem', padding: '1rem', background: '#111', color: '#eee' }}>
-          {/* eslint-disable-next-line react/no-unescaped-entities */}
-          <h2>AI's Reply:</h2>
-          <p>{reply}</p>
-        </div>
-      )}
-    </div>
   );
 }
