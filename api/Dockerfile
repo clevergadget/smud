@@ -12,7 +12,7 @@ COPY . .
 
 
 # Tell Docker we want to expose port 3000
-EXPOSE 3000
+EXPOSE 3001
 
 # Run the app (Next.js production mode)
 CMD ["node", "index.mjs"]
