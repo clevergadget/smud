@@ -18,7 +18,7 @@ export default function Home() {
         console.error('Failed to fetch intro:', err);
       }
     };
-  
+
     fetchIntro();
   }, []);
 
@@ -58,18 +58,19 @@ export default function Home() {
       </header>
 
       {/* Message log that grows upward */}
-      <div className="flex-1 overflow-y-auto flex flex-col-reverse bg-gray-950 p-4 rounded shadow text-sm font-mono whitespace-pre-wrap">
+      <div className="flex-1 overflow-y-auto flex flex-col-reverse bg-black text-green-400 p-4 font-mono tracking-wide text-sm whitespace-pre-wrap border border-green-700">
         <div>
           {log.map((entry, idx) => (
-            <div key={idx} className="mb-2">
-              <span className="text-gray-400">
-                {entry.role === 'user' ? '> ' : '💬 '}
+            <div key={idx} className="mb-1">
+              <span className="text-green-600">
+                {entry.role === 'user' ? '> ' : ''}
               </span>
-              <span>{entry.message}</span>
+              <span className="text-green-300">{entry.message}</span>
             </div>
           ))}
         </div>
       </div>
+
 
       {/* Input form pinned to the bottom */}
       <form onSubmit={handleSubmit} className="mt-4 flex flex-col space-y-2">
@@ -77,8 +78,14 @@ export default function Home() {
           rows={3}
           value={userMessage}
           onChange={(e) => setUserMessage(e.target.value)}
-          placeholder="What do you do?"
-          className="w-full bg-gray-800 p-3 rounded text-white border border-gray-700 focus:outline-none focus:ring focus:border-blue-500"
+          placeholder="Type your command..."
+          className="w-full bg-black border border-green-700 text-green-300 p-2 font-mono focus:outline-none focus:ring focus:border-lime-400"
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+              e.preventDefault();  // stops newline
+              handleSubmit(e);     // submits the form
+            }
+          }}
         />
         <button
           type="submit"
