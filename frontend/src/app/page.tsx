@@ -3,9 +3,8 @@
 import { useEffect, useState } from 'react';
 
 export default function Home() {
-  const [intro, setIntro] = useState('');
   const [userMessage, setUserMessage] = useState('');
-  const [log, setLog] = useState<{ role: 'user' | 'ai'; message: string }[]>([]);
+  const [log, setLog] = useState<{ role: 'user' | 'ai' | 'intro'; message: string }[]>([]);
 
 
   useEffect(() => {
@@ -13,7 +12,7 @@ export default function Home() {
       try {
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/intro?mud=darkswamp`);
         const text = await res.text();
-        setIntro(text);
+        setLog([{ role: 'intro', message: text }]);
       } catch (err) {
         console.error('Failed to fetch intro:', err);
       }
@@ -52,9 +51,6 @@ export default function Home() {
       {/* Title and intro text */}
       <header className="mb-4">
         <h1 className="text-2xl font-bold">DarkSwamp MUD</h1>
-        {intro && (
-          <p className="text-sm text-gray-400 mt-1 whitespace-pre-wrap">{intro}</p>
-        )}
       </header>
 
       {/* Message log that grows upward */}
@@ -62,10 +58,10 @@ export default function Home() {
         <div>
           {log.map((entry, idx) => (
             <div key={idx} className="mb-1">
-              <span className="text-green-600">
+              <span className="tracking-wider text-green-600">
                 {entry.role === 'user' ? '> ' : ''}
               </span>
-              <span className="text-green-300">{entry.message}</span>
+              <span className="tracking-wider text-green-300">{entry.message}</span>
             </div>
           ))}
         </div>
@@ -79,7 +75,7 @@ export default function Home() {
           value={userMessage}
           onChange={(e) => setUserMessage(e.target.value)}
           placeholder="Type your command..."
-          className="w-full bg-black border border-green-700 text-green-300 p-2 font-mono focus:outline-none focus:ring focus:border-lime-400"
+          className="tracking-wider w-full bg-black border border-green-700 text-green-300 p-2 font-mono focus:outline-none focus:ring focus:border-lime-400"
           onKeyDown={(e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
               e.preventDefault();  // stops newline
