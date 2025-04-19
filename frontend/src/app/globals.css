@@ -25,3 +25,10 @@ body {
   font-size: 14px;
   line-height: 1.5;
 }
+
+.scanlines {
+  background-image: linear-gradient(rgba(0, 255, 0, 0.1) 50%,
+      transparent 50%);
+  background-size: 100% 2px;
+  pointer-events: none;
+}
